@@ -1,87 +1,94 @@
 package com.example.library;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
-    EditText Bookid,Title,Author,Year;
 
+    EditText title,id,author,year;
     Button load,upload;
-
-
-    @SuppressLint("MissingInflatedId")
+    RecyclerView recyclerView;
+    ArrayList<books> book = new ArrayList<>();
+    @SuppressLint("Range")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Bookid=findViewById(R.id.id1);
-        Title=findViewById(R.id.title1);
-        Author=findViewById(R.id.authour1);
-        Year=findViewById(R.id.year1);
-        load=findViewById(R.id.load1);
-        upload=findViewById(R.id.update1);
-
+        title=findViewById(R.id.bookName);
+        id=findViewById(R.id.id);
+        author=findViewById(R.id.Author);
+        year=findViewById(R.id.year);
+        upload=findViewById(R.id.Upload);
 
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String eTitle = title.getText().toString();
+                String eId = id.getText().toString();
+                String eAuthor=author.getText().toString();
+                String eYear = year.getText().toString();
 
-                String eBookid = Bookid.getText().toString();
-                String etitle = Title.getText().toString();
-                String eauthor = Author.getText().toString();
-                String eyear = Year.getText().toString();
+                if(eTitle.isEmpty() || eId.isEmpty() || eAuthor.isEmpty() || eYear.isEmpty())
+                {
+                    Toast.makeText(getApplicationContext(), "Please Enter All Fields", Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+                    // class to add values in the database
+                    ContentValues values = new ContentValues();
 
-                ContentValues values = new ContentValues();
-                values.put(MyContentProvider.Bookid, eBookid);
-                values.put(MyContentProvider.Title, etitle);
-                values.put(MyContentProvider.Author, eauthor);
-                values.put(MyContentProvider.Year, eyear);
+                    // fetching text from user
+                    values.put(MyContentProvider.id,eId);
+                    values.put(MyContentProvider.title,eTitle);
+                    values.put(MyContentProvider.Author,eAuthor);
+                    values.put(MyContentProvider.year,eYear);
 
-                getContentResolver().insert(MyContentProvider.CONTENT_URI, values);
+                    // inserting into database through content URI
+                    getContentResolver().insert(MyContentProvider.CONTENT_URI, values);
 
-                android.widget.Toast.makeText(getApplicationContext(), "New Record Inserted", Toast.LENGTH_LONG).show();
-            }
-        });
-
-        load.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("Range")
-            @Override
-            public void onClick(View v) {
-
-                TextView resultView= (TextView) findViewById(R.id.result);
-
+                    // displaying a toast message
+                    Toast.makeText(getApplicationContext(), "New Record Inserted", Toast.LENGTH_LONG).show();
+                }
+                recyclerView = findViewById(R.id.recycleView);
+                // creating a cursor object of the
+                // content URI
                 Cursor cursor = getContentResolver().query(MyContentProvider.CONTENT_URI,
                         null, null, null, null);
 
+                // iteration of the cursor
+                // to print whole table
+
                 if(cursor.moveToFirst()) {
-                    StringBuilder strBuild=new StringBuilder();
+                    String i,t,a,y;
                     while (!cursor.isAfterLast()) {
-                        strBuild.append("\n").
-                                append(cursor.getString(cursor.getColumnIndex(MyContentProvider.Bookid))).
-                                append("  ").append(cursor.getString(cursor.getColumnIndex(MyContentProvider.Title))).
-                                append("  ").append(cursor.getString(cursor.getColumnIndex(MyContentProvider.Author))).
-                                append("  ").append(cursor.getString(cursor.getColumnIndex(MyContentProvider.Year)));
+                        i ="ID : "+ cursor.getString(cursor.getColumnIndex(MyContentProvider.id));
+                        t = cursor.getString(cursor.getColumnIndex(MyContentProvider.title));
+                        a = "Author : "+cursor.getString(cursor.getColumnIndex(MyContentProvider.Author));
+                        y = "Published Year : "+cursor.getString(cursor.getColumnIndex(MyContentProvider.year));
+                        book.add(new books(i,t,a,y));
                         cursor.moveToNext();
                     }
-                    resultView.setText(strBuild);
-                }
-                else {
-                    resultView.setText("No Records Found");
+                    Books_RecyclerAdapter adapter = new Books_RecyclerAdapter(getApplicationContext(),book);
+                    recyclerView.setAdapter(adapter);
+                    adapter.notifyItemInserted(book.size()-1);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                 }
             }
         });
+
+            }
+
     }
-}

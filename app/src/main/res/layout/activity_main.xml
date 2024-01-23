@@ -7,108 +7,113 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="25dp"
         android:id="@+id/title"
-        />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+
+        android:text="library"
+
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
     <EditText
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:hint="Enter book id"
-        android:layout_below="@+id/title"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
-        android:id="@+id/id1"
-
-        />
-
-    <EditText
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:hint="Enter title"
-        android:layout_below="@+id/id1"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
-        android:id="@+id/title1"
-        />
-
-    <EditText
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:hint="Enter Authour"
-        android:layout_below="@+id/title1"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
-        android:id="@+id/authour1"
-
-        />
-
-    <EditText
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:hint="enter Authour"
-        android:layout_below="@+id/authour1"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
-        android:id="@+id/year1"
-
-
-        />
-
-    <Button
+        android:id="@+id/id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="load"
-        android:layout_alignLeft="@+id/authour1"
-        android:layout_below="@+id/year1"
-        android:layout_marginTop="15dp"
-        android:id="@+id/load1"
-
-        />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="update"
-        android:layout_alignRight="@+id/authour1"
-        android:layout_below="@+id/year1"
-        android:layout_marginTop="15dp"
-        android:id="@+id/update1"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/authour1"
-        android:layout_marginTop="130dp"
-        android:text=" - "
+        android:layout_alignBottom="@id/title"
         android:layout_centerHorizontal="true"
-        android:id="@+id/result"
+        android:layout_marginBottom="-60dp"
 
-        />
-    <ScrollView
+        android:ems="10"
+        android:hint="id"
+        android:inputType="text"
+        android:padding="10dp"
+        android:text=""
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:textSize="20sp"/>
+
+    <EditText
+        android:id="@+id/bookName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-120dp"
+
+        android:ems="10"
+        android:hint="Title"
+        android:inputType="text"
+        android:padding="10dp"
+        android:text=""
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:textSize="20sp"/>
+    <EditText
+        android:id="@+id/Author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-180dp"
+
+        android:ems="10"
+        android:hint="Author"
+        android:inputType="text"
+        android:padding="10dp"
+        android:text=""
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:textSize="20sp"/>
+
+    <EditText
+        android:id="@+id/year"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-240dp"
+
+        android:ems="10"
+        android:hint="Published Year"
+        android:maxLength="4"
+        android:inputType="number"
+        android:padding="10dp"
+        android:text=""
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:textSize="20sp" />
+
+    <LinearLayout
+        android:id="@+id/ButtonLayout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/title"
+        android:layout_marginTop="250dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+
+        <Button
+            android:id="@+id/Upload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:ems="10"
+            android:text="Upload Details"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycleView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="50dp"
-        android:layout_below="@+id/load1"
-        >
+        android:layout_below="@id/ButtonLayout"
+        android:layout_marginTop="10dp"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:nestedScrollingEnabled="true"
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-        </LinearLayout>
-    </ScrollView>
 
 </RelativeLayout>
